@@ -34,6 +34,7 @@ app.use("/usersdetials", createpinRouter);
 app.use("/images", express.static("images"));
 // app.use("/profile", Useroute);
 
-app.listen(9000, () => {
-  console.log("9000");
+const PORT = process.env.PORT;
+app.listen(PORT, () => {
+  console.log("App is runing on " + PORT);
 });
