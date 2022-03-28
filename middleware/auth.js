@@ -8,7 +8,7 @@ const auth = async (request, response, next) => {
     Jwt.verify(token, process.env.JWT_SECRET);
     next();
   } catch (err) {
-    response.send({ error: err.message });
+    response.status(400).send({ message: "failure" });
   }
 };
 

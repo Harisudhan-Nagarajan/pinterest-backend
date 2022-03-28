@@ -29,11 +29,16 @@ router.post("/signup", async (request, response) => {
   //getting harshpassword
   const hashedpassword = await harshpassword(password);
   //sending datas to DB
-  const sends = await senduserdetials(username, email, hashedpassword);
+
+  const path = "/images/1647928346695--default%20pic.jpg";
+  const sends = await senduserdetials(username, email, hashedpassword, path);
   if (sends.acknowledged) {
-    response.status(200).send({ message: "success" });
+    const checkusername = await checkuser(username);
+    const token = Jwt.sign({ id: checkusername._id }, process.env.JWT_SECRET);
+    response.status(200).send({ message: "success", token: token });
     return;
   }
+
   response.status(400).send({ message: "Error Occurs Please Try again later" });
 });
 
@@ -142,6 +147,9 @@ router.post("/changepassword", auth, async (request, response) => {
 });
 
 router.get("/Home", auth, async (request, response) => {
+  if (!request.header("username")) {
+    response.status(400).send({ message: "failure" });
+  }
   const userdetials = await checkuser(request.header("username"));
 
   response.send(userdetials);

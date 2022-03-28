@@ -17,12 +17,19 @@ export const checkuser = async (username) => {
 };
 
 //create user
-export const senduserdetials = async (username, email, hashedpassword) => {
+export const senduserdetials = async (
+  username,
+  email,
+  hashedpassword,
+  path
+) => {
   return await client.db("pinterest").collection("userdetials").insertOne({
     name: username,
     username: username,
     email: email,
     password: hashedpassword,
+    profilepic: path,
+    setup: true,
   });
 };
 

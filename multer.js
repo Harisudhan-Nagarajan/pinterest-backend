@@ -40,12 +40,15 @@ router.post(
 
     const username = request.header("username");
     const change = await changeprofile(username, path);
-    if(change.acknowledged){
-      response.send({path:path});
+    if (change.acknowledged) {
+      response.send({ path: path });
       return;
     }
 
     response.send(change);
   }
 );
+
 export const createpinRouter = router;
+
+// fs.rmdir("./images"); -delete file and folder
