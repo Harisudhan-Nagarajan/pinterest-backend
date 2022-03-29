@@ -16,6 +16,12 @@ export const checkuser = async (username) => {
     .findOne({ username: username });
 };
 
+export const userdetial = async (username) => {
+  return await client
+    .db("pinterest")
+    .collection("userdetials")
+    .findOne({ username: username },{password:0,resetcode:0});
+};
 //create user
 export const senduserdetials = async (
   username,
