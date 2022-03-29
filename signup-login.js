@@ -21,6 +21,7 @@ router.post("/signup", async (request, response) => {
   const { username, email, password } = request.body;
   //checking userName is available
   const checkusername = await checkuser(username);
+  console.log(checkusername);
   //if username already exists
   if (checkusername) {
     response.status(400).send({ message: "username already exists" }); //if username already exists
@@ -62,6 +63,7 @@ router.post("/signin", async (request, response) => {
   response.status(200).send({ message: "login success", token: token });
 });
 
+// forgetpassword Route
 router.post("/forgetpass", async (request, response) => {
   const { resetusername } = request.body;
 
@@ -112,6 +114,7 @@ router.post("/forgetpass", async (request, response) => {
   response.status(400).send({ message: "Error Occurs Please Try again later" });
 });
 
+// checkresetcode Route
 router.post("/checkresetcode", async (request, response) => {
   const { resetusername, resetcode } = request.body;
   const checkusername = await checkuser(resetusername);
@@ -134,6 +137,7 @@ router.post("/checkresetcode", async (request, response) => {
   response.status(400).send({ message: "Error Occurs Please Try again later" });
 });
 
+//changepassword Route
 router.post("/changepassword", auth, async (request, response) => {
   const { password, username } = request.body;
   const hashedpassword = await harshpassword(password);
@@ -146,12 +150,4 @@ router.post("/changepassword", auth, async (request, response) => {
   response.status(400).send({ message: "Error Occurs Please Try again later" });
 });
 
-router.get("/Home", auth, async (request, response) => {
-  if (!request.header("username")) {
-    response.status(400).send({ message: "failure" });
-  }
-  const userdetials = await checkuser(request.header("username"));
-
-  response.send(userdetials);
-});
 export const UseRouter = router;

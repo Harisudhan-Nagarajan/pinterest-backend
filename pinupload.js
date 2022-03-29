@@ -9,7 +9,7 @@ const fileStorageEngine = multer.diskStorage({
     cb(null, "./images"); //important this is a direct path fron our current file to storage location
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + "--" + file.originalname);
+    cb(null, Date.now() + "--" + file.originalname); //image name to be saved in server
   },
 });
 
@@ -20,13 +20,15 @@ router.post(
   auth,
   upload.single("image"),
   async (request, response) => {
-    console.log(request.file.path);
     const { path } = request.file;
-    console.log(request.body);
     const { title, aboutpin, link } = request.body;
     const username = request.header("username");
     const save = await savepin(title, username, path, aboutpin, link);
-    response.send(save);
+    if (save.acknowledged) {
+      response.status(200).send({ message: "success" });
+      return;
+    }
+    response.status(400).send({ message: "failure" });
   }
 );
 
@@ -35,17 +37,16 @@ router.post(
   auth,
   upload.single("image"),
   async (request, response) => {
-    console.log(request.file.path);
     const { path } = request.file;
 
     const username = request.header("username");
     const change = await changeprofile(username, path);
     if (change.acknowledged) {
-      response.send({ path: path });
+      response.status(200).send({ message: "success" });
       return;
     }
 
-    response.send(change);
+    response.status(400).send({ message: "failure" });
   }
 );
 
