@@ -10,7 +10,7 @@ router.get("/Home", auth, async (request, response) => {
   }
   const userdetials = await userdetial(request.header("username"));
 
-  response.send({ mwessage: "success" });
+  response.send(userdetials);
 });
 
 export const userdetials = router;
