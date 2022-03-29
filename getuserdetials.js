@@ -1,16 +1,20 @@
 import express from "express";
 import multer from "multer";
 import auth from "./middleware/auth.js";
-import { userdetial } from "./helper.js";
+import { userdetial, checkuser } from "./helper.js";
 const router = express.Router();
 
-router.get("/Home", auth, async (request, response) => {
+router.get("/Home", async (request, response) => {
   if (!request.header("username")) {
     response.status(400).send({ message: "failure" });
   }
   const userdetials = await userdetial(request.header("username"));
+  if (userdetials.length > 0) {
+    response.status(200).send({ message: "success", userdetials });
+    return;
+  }
 
-  response.send(userdetials);
+  response.status(400).send({ message: "failure" });
 });
 
 export const userdetials = router;
