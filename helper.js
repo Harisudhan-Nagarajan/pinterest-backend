@@ -20,7 +20,7 @@ export const userdetial = async (username) => {
   return await client
     .db("pinterest")
     .collection("userdetials")
-    .find({ username: username },{password:0,resetcode:0});
+    .find({ },{password:0,resetcode:0});
 };
 //create user
 export const senduserdetials = async (
