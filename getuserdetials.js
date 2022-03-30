@@ -16,7 +16,7 @@ router.get("/Home", async (request, response) => {
   response.status(400).send({ message: "failure" });
 });
 
-router.get("/postfeed"),
+router.post("/postfeed"),
   async (request, response) => {
     const { feed } = request.body;
     const postfeeds = await updatefeed(request.header("username"), feed);
