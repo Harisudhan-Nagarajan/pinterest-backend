@@ -89,8 +89,5 @@ export const updatefeed = async (username, feed) => {
   return await client
     .db("pinterest")
     .collection("userdetials")
-    .updateOne(
-      { username: username },
-      { $set: { feed: feed }, $set: { setup: false } }
-    );
+    .updateOne({ username: username }, { $set: { feed: feed, setup: false } });
 };
