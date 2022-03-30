@@ -38,6 +38,8 @@ export const senduserdetials = async (
     password: hashedpassword,
     profilepic: path,
     setup: true,
+    about: "",
+    website: "",
   });
 };
 
