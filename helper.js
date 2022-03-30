@@ -20,7 +20,9 @@ export const userdetial = async (username) => {
   return await client
     .db("pinterest")
     .collection("userdetials")
-    .find({username:username}).project({password:0,resetcode:0}).toArray();
+    .find({ username: username })
+    .project({ password: 0, resetcode: 0 })
+    .toArray();
 };
 //create user
 export const senduserdetials = async (
@@ -80,4 +82,15 @@ export const changeprofile = async (username, path) => {
     .db("pinterest")
     .collection("userdetials")
     .updateOne({ username: username }, { $set: { profilepic: path } });
+};
+
+//updatefeed elements
+export const updatefeed = async (username, feed) => {
+  return await client
+    .db("pinterest")
+    .collection("userdetials")
+    .updateOne(
+      { username: username },
+      { $set: { feed: feed }, $set: { setup: false } }
+    );
 };

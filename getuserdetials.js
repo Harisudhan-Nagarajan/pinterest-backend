@@ -1,7 +1,7 @@
 import express from "express";
 import multer from "multer";
 import auth from "./middleware/auth.js";
-import { userdetial, checkuser } from "./helper.js";
+import { userdetial, updatefeed } from "./helper.js";
 const router = express.Router();
 
 router.get("/Home", async (request, response) => {
@@ -16,4 +16,14 @@ router.get("/Home", async (request, response) => {
   response.status(400).send({ message: "failure" });
 });
 
+router.get("/postfeed"),
+  async (request, response) => {
+    const { feed } = request.body;
+    const postfeeds = await updatefeed(request.header("username"), feed);
+    if (postfeeds.acknowledged) {
+      response.status(200).send({ message: "success" });
+      return;
+    }
+    response.status(400).send({ message: "failure" });
+  };
 export const userdetials = router;
