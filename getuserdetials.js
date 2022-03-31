@@ -26,7 +26,7 @@ router.post("/postfeed", async (request, response) => {
   response.status(400).send({ message: "failure" });
 });
 
-router.post("/updateuserdetial", async (request, response) => {
+router.post("/updateuserdetial",auth, async (request, response) => {
   const { name, about, website, newusername } = request.body;
   const username = request.header("username");
   if (!username) {
