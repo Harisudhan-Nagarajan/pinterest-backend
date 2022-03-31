@@ -27,10 +27,14 @@ router.post("/postfeed", async (request, response) => {
 });
 
 router.post("/updateuserdetial", async (request, response) => {
-  const {name,about,website,username}=request.body;
+  const { name, about, website, username } = request.body;
+  const oldusername = request.header("username");
   const updateprofile = await updateprofileinfo(
-    request.header("username"),
-    name,about,website,username
+    oldusername,
+    name,
+    about,
+    website,
+    username
   );
   if (updateprofile.acknowledged) {
     response.status(200).send({ message: "success" });
