@@ -1,7 +1,12 @@
 import express from "express";
 import multer from "multer";
 import auth from "./middleware/auth.js";
-import { userdetial, updatefeed, updateprofileinfo } from "./helper.js";
+import {
+  userdetial,
+  updatefeed,
+  updateprofileinfo,
+  checkuser,
+} from "./helper.js";
 const router = express.Router();
 
 router.get("/Home", async (request, response) => {
@@ -33,10 +38,10 @@ router.post("/updateuserdetial", auth, async (request, response) => {
     response.status(400).send({ username: "failure" });
     return;
   }
-  const checkuser = await checkuser(username);
-  console.log(checkuser);
-  if (checkuser) {
-    response.status(400).send({ message: "username already exists" }); 
+  const checkusers = await checkuser(username);
+  console.log(checkusers);
+  if (checkusers) {
+    response.status(400).send({ message: "username already exists" });
     return;
   }
   const updateprofile = await updateprofileinfo(
