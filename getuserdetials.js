@@ -27,14 +27,24 @@ router.post("/postfeed", async (request, response) => {
 });
 
 router.post("/updateuserdetial", async (request, response) => {
-  const { name, about, website, username } = request.body;
-  const oldusername = request.header("username");
+  const { name, about, website, newusername } = request.body;
+  const username = request.header("username");
+  if (!username) {
+    response.status(400).send({ username: "failure" });
+    return;
+  }
+  const checkuser = await checkuser(username);
+  console.log(checkuser);
+  if (checkuser) {
+    response.status(400).send({ message: "username already exists" }); //if username already exists
+    return;
+  }
   const updateprofile = await updateprofileinfo(
-    oldusername,
+    username,
     name,
     about,
     website,
-    username
+    newusername
   );
   if (updateprofile.acknowledged) {
     response.status(200).send({ message: "success" });
