@@ -103,6 +103,7 @@ export const updateprofileinfo = async (
   website,
   username
 ) => {
+  console.log(oldusername,name,about,website,username)
   return await client
     .db("pinterest")
     .collection("userdetials")
