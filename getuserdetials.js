@@ -41,6 +41,7 @@ router.post("/updateuserdetial", auth, async (request, response) => {
   
   if (username !== newusername) {
     const checkusers = await checkuser(username);
+    console.log(checkuser);
     if (checkusers) {
       response.status(400).send({ message: "username already exists" });
       return;
