@@ -98,7 +98,10 @@ export const updatefeed = async (username, feed) => {
 
 export const updateprofileinfo = async (
   oldusername,
-  { name, about, website, username }
+  name,
+  about,
+  website,
+  username
 ) => {
   return await client
     .db("pinterest")
