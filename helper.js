@@ -93,3 +93,25 @@ export const updatefeed = async (username, feed) => {
     .collection("userdetials")
     .updateOne({ username: username }, { $set: { feed: feed, setup: false } });
 };
+
+//update public profile
+
+export const updateprofileinfo = async (
+  oldusername,
+  { name, about, website, username }
+) => {
+  return await client
+    .db("pinterest")
+    .collection("userdetials")
+    .updateOne(
+      { username: oldusername },
+      {
+        $set: {
+          name: name,
+          about: about,
+          website: website,
+          username: username,
+        },
+      }
+    );
+};

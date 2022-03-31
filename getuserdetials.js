@@ -1,7 +1,7 @@
 import express from "express";
 import multer from "multer";
 import auth from "./middleware/auth.js";
-import { userdetial, updatefeed } from "./helper.js";
+import { userdetial, updatefeed, updateprofileinfo } from "./helper.js";
 const router = express.Router();
 
 router.get("/Home", async (request, response) => {
@@ -27,14 +27,14 @@ router.post("/postfeed", async (request, response) => {
 });
 
 router.post("/updateuserdetial", async (request, response) => {
-  const { name, about, website, username } = request.body;
-  console.log(name, about, website, username);
-  // const postfeeds = await updatefeed(request.header("username"), feed);
-  // if (postfeeds.acknowledged) {
-  //   response.status(200).send({ message: "success" });
-  //   return;
-  // }
-  // response.status(400).send({ message: "failure" });
-  response.send(request.body);
+  const updateprofile = await updateprofileinfo(
+    request.header("username"),
+    request.body
+  );
+  if (updateprofile.acknowledged) {
+    response.status(200).send({ message: "success" });
+    return;
+  }
+  response.status(400).send({ message: "failure" });
 });
 export const userdetials = router;
