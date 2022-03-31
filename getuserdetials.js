@@ -28,6 +28,7 @@ router.post("/postfeed", async (request, response) => {
 
 router.post("/updateuserdetial", async (request, response) => {
   const { name, about, website, username } = request.body;
+  console.log(name, about, website, username);
   // const postfeeds = await updatefeed(request.header("username"), feed);
   // if (postfeeds.acknowledged) {
   //   response.status(200).send({ message: "success" });
