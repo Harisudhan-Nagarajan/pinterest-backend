@@ -42,7 +42,7 @@ router.post(
     const username = request.header("username");
     const change = await changeprofile(username, path);
     if (change.acknowledged) {
-      response.status(200).send({ message: "success" });
+      response.status(200).send({ message: "success",path:path });
       return;
     }
 

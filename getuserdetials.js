@@ -34,10 +34,6 @@ router.post("/postfeed", async (request, response) => {
 router.post("/updateuserdetial", auth, async (request, response) => {
   const { name, about, website, newusername } = request.body;
   const username = request.header("username");
-  if (!username) {
-    response.status(400).send({ username: "failure" });
-    return;
-  }
   
   if (username !== newusername) {
     const checkusers = await checkuser(newusername);
