@@ -31,7 +31,7 @@ router.post("/signup", async (request, response) => {
   const hashedpassword = await harshpassword(password);
   //sending datas to DB
 
-  const path = "/images/1647928346695--default%20pic.jpg";
+  const path = "images/1647928346695--default%20pic.jpg";
   const sends = await senduserdetials(username, email, hashedpassword, path);
   if (sends.acknowledged) {
     const checkusername = await checkuser(username);

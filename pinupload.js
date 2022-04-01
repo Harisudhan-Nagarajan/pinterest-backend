@@ -21,9 +21,9 @@ router.post(
   upload.single("image"),
   async (request, response) => {
     const { path } = request.file;
-    const { title, aboutpin, link } = request.body;
+    const { title, aboutpin, link, category } = request.body;
     const username = request.header("username");
-    const save = await savepin(title, username, path, aboutpin, link);
+    const save = await savepin(title, username, path, aboutpin, link, category);
     if (save.acknowledged) {
       response.status(200).send({ message: "success" });
       return;
@@ -42,7 +42,7 @@ router.post(
     const username = request.header("username");
     const change = await changeprofile(username, path);
     if (change.acknowledged) {
-      response.status(200).send({ message: "success",path:path });
+      response.status(200).send({ message: "success", path: path });
       return;
     }
 

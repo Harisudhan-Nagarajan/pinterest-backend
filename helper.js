@@ -68,13 +68,21 @@ export const updatepassword = async (username, hashedpassword) => {
 };
 
 //multer pin create
-export const savepin = async (title, username, path, aboutpin, link) => {
+export const savepin = async (
+  title,
+  username,
+  path,
+  aboutpin,
+  link,
+  category
+) => {
   return await client.db("pinterest").collection("pins").insertOne({
     title: title,
     username: username,
     path: path,
     aboutpin: aboutpin,
     link: link,
+    category: category,
   });
 };
 
