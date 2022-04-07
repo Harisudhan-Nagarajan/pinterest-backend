@@ -88,7 +88,7 @@ router.post("/searchprofile", async (request, response) => {
 });
 
 router.post("/profileview", async (request, response) => {
-  const { name } = request.query;
+  const { name } = request.body;
   const username = name;
   const userdetials = await userdetial(username);
 
