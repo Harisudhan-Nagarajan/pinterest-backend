@@ -103,7 +103,6 @@ export const updatefeed = async (username, feed) => {
 };
 
 //update public profile
-
 export const updateprofileinfo = async (
   oldusername,
   name,
@@ -126,3 +125,11 @@ export const updateprofileinfo = async (
       }
     );
 };
+
+//search user
+
+
+//search pins
+export const searchpin = async (searchitem) => {
+  return await client.db("pinterest").collection("pins").find({category:searchitem}).toArray();
+}

@@ -4,7 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { UseRouter } from "./signup-login.js";
 import { createpinRouter } from "./pinupload.js";
-import{userdetials} from "./getuserdetials.js";
+import { userdetials } from "./getuserdetials.js";
 
 dotenv.config();
 const MONGO_URL = process.env.MONGO_URL;
@@ -37,11 +37,10 @@ app.use("/signup_login", UseRouter);
 //Pin upload flow routes
 app.use("/pins", createpinRouter);
 
+app.use("/profile", userdetials);
+
 //getting image in server
 app.use("/images", express.static("images"));
-
-
-app.use("/profile", userdetials);
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {

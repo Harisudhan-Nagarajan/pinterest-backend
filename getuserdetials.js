@@ -6,6 +6,7 @@ import {
   updatefeed,
   updateprofileinfo,
   checkuser,
+  searchpin,
 } from "./helper.js";
 const router = express.Router();
 
@@ -34,7 +35,7 @@ router.post("/postfeed", async (request, response) => {
 router.post("/updateuserdetial", auth, async (request, response) => {
   const { name, about, website, newusername } = request.body;
   const username = request.header("username");
-  
+
   if (username !== newusername) {
     const checkusers = await checkuser(newusername);
     console.log(checkuser);
@@ -57,4 +58,30 @@ router.post("/updateuserdetial", auth, async (request, response) => {
   }
   response.status(400).send({ message: "failure" });
 });
+
+router.get("/searchpin", async (request, response) => {
+  if (!request.header("username")) {
+    response.status(400).send({ message: "failure" });
+  }
+  const { searchvalue } = request.body;
+  const searchpins = await searchpin(searchvalue);
+  if (searchpins.length > 0) {
+    response.status(200).send(searchpins);
+    return;
+  }
+  response.status(400).send({ message: "failure" });
+});
+
+router.get("/searchprofile", async (request, response) => {
+  if (!request.header("username")) {
+    response.status(400).send({ message: "failure" });
+  }
+  const userdetials = await userdetial(request.header("username"));
+  if (userdetials.length > 0) {
+    response.status(200).send(userdetials[0]);
+    return;
+  }
+  response.status(400).send({ message: "failure" });
+});
+
 export const userdetials = router;
