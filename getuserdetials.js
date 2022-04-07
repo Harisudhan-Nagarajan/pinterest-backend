@@ -89,8 +89,8 @@ router.post("/searchprofile", async (request, response) => {
 
 router.post("/profileview", async (request, response) => {
   const { name } = request.query;
-
-  const userdetials = await userdetial(name);
+  const username = name;
+  const userdetials = await userdetial(username);
 
   if (userdetials.length === 0) {
     response.status(400).send({ message: "failure" });
