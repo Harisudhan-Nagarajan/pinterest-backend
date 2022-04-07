@@ -90,7 +90,7 @@ router.post("/searchprofile", async (request, response) => {
 router.post("/profileview", async (request, response) => {
   const { name } = request.body;
   const username = name;
-  console.log(name)
+  console.log(name);
   const userdetials = await userdetial(username);
 
   if (userdetials.length === 0) {
@@ -100,6 +100,16 @@ router.post("/profileview", async (request, response) => {
   const pins = await userpins(name);
   const userinfo = { userdetial: userdetials[0], pins: pins };
   response.status(200).send(userinfo);
+});
+
+router.get("/userpins", async (request, response) => {
+  if (!request.header("username")) {
+    response.status(400).send({ message: "failure" });
+  }
+
+  const pins = await userpins(request.header("username"));
+
+  response.status(200).send(pins);
 });
 
 export const userdetials = router;
