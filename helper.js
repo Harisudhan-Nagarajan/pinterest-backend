@@ -143,3 +143,11 @@ export const searchpin = async (searchitem) => {
     .find({ category: searchitem })
     .toArray();
 };
+
+export const userpins = async (name) => {
+  return await client
+    .db("pinterest")
+    .collection("pins")
+    .find({ username: name })
+    .toArray();
+};

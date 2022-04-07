@@ -8,6 +8,7 @@ import {
   checkuser,
   searchpin,
   searchprofile,
+  userpins,
 } from "./helper.js";
 const router = express.Router();
 
@@ -84,6 +85,20 @@ router.post("/searchprofile", async (request, response) => {
     return;
   }
   response.status(400).send({ message: "failure" });
+});
+
+router.post("/profileview", async (request, response) => {
+  const { name } = request.query;
+
+  const userdetials = await userdetial(name);
+
+  if (userdetials.length === 0) {
+    response.status(400).send({ message: "failure" });
+    return;
+  }
+  const pins = await userpins(name);
+  const userinfo = { userdetial: userdetials[0], pins: pins };
+  response.status(200).send(userinfo);
 });
 
 export const userdetials = router;
