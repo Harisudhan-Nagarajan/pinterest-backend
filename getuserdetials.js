@@ -7,6 +7,7 @@ import {
   updateprofileinfo,
   checkuser,
   searchpin,
+  searchprofile,
 } from "./helper.js";
 const router = express.Router();
 
@@ -59,7 +60,7 @@ router.post("/updateuserdetial", auth, async (request, response) => {
   response.status(400).send({ message: "failure" });
 });
 
-router.post("/searchpin", async (request, response) => {
+router.post("/searchpin", auth, async (request, response) => {
   if (!request.header("username")) {
     response.status(400).send({ message: "failure" });
   }
@@ -72,13 +73,14 @@ router.post("/searchpin", async (request, response) => {
   response.status(400).send({ message: "failure" });
 });
 
-router.get("/searchprofile", async (request, response) => {
+router.post("/searchprofile", async (request, response) => {
   if (!request.header("username")) {
     response.status(400).send({ message: "failure" });
   }
-  const userdetials = await userdetial(request.header("username"));
-  if (userdetials.length > 0) {
-    response.status(200).send(userdetials[0]);
+  const { searchvalue } = request.body;
+  const searchprofiles = await searchprofile(searchvalue);
+  if (searchprofiles.length > 0) {
+    response.status(200).send(searchprofiles);
     return;
   }
   response.status(400).send({ message: "failure" });

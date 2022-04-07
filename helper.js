@@ -126,10 +126,20 @@ export const updateprofileinfo = async (
     );
 };
 
-//search user
-
+//search user searchprofile
+export const searchprofile = async (searchitem) => {
+  return await client
+    .db("pinterest")
+    .collection("userdetials")
+    .find({ name: searchitem })
+    .toArray();
+};
 
 //search pins
 export const searchpin = async (searchitem) => {
-  return await client.db("pinterest").collection("pins").find({category:searchitem}).toArray();
-}
+  return await client
+    .db("pinterest")
+    .collection("pins")
+    .find({ category: searchitem })
+    .toArray();
+};
