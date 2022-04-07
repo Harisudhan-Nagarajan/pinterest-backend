@@ -59,7 +59,7 @@ router.post("/updateuserdetial", auth, async (request, response) => {
   response.status(400).send({ message: "failure" });
 });
 
-router.get("/searchpin", async (request, response) => {
+router.post("/searchpin", async (request, response) => {
   if (!request.header("username")) {
     response.status(400).send({ message: "failure" });
   }
