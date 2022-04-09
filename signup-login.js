@@ -113,7 +113,7 @@ router.post("/forgetpass", async (request, response) => {
   const hashedpassword = await harshpassword(resetcode);
   const update_code = await updateresetcode(hashedpassword, username);
   if (update_code.acknowledged) {
-    await sendMail(email, resetcode, request, response);
+    await sendMail(email, resetcode, response);
     return;
   }
   response.status(400).send({ message: "failure" });
