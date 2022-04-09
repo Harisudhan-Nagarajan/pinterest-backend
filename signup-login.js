@@ -90,9 +90,9 @@ async function sendMail(email, resetcode, response) {
 
   mailTransporter.sendMail(mailDetails, async (err) => {
     if (err) {
-      return response.status(200).send({ message: "success" });
+      return response.status(400).send({ message: "failure" });
     }
-    return response.status(400).send({ message: "failure" });
+    return response.status(200).send({ message: "success" });
   });
 }
 
