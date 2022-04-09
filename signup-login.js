@@ -12,6 +12,8 @@ import {
   updatepassword,
 } from "./helper.js";
 import auth from "./middleware/auth.js";
+import { google } from "googleapis";
+const OAuth2 = google.auth.OAuth2;
 
 dotenv.config();
 const router = express.Router();
@@ -64,6 +66,37 @@ router.post("/signin", async (request, response) => {
 });
 
 // forgetpassword Route
+
+async function sendMail(email, resetcode, response) {
+  let mailTransporter = nodemailer.createTransport({
+    service: "Gmail",
+    auth: {
+      type: "OAuth2",
+      user: process.env.mailid,
+      pass: process.env.mailpass,
+      clientId: process.env.client_id,
+      clientSecret: process.env.client_secret,
+      refreshToken: process.env.referencetoken,
+      // accessToken: accessToken,
+    },
+  });
+
+  let mailDetails = {
+    from: "<noReply>",
+    to: email,
+    subject: "OTP",
+    text: `The verificaion code is ${resetcode}`,
+  };
+
+  mailTransporter.sendMail(mailDetails, async (err) => {
+    if (err) {
+      return "failure";
+    }
+
+    return "success";
+  });
+}
+
 router.post("/forgetpass", async (request, response) => {
   const { resetusername } = request.body;
 
@@ -79,41 +112,17 @@ router.post("/forgetpass", async (request, response) => {
     .replace(/[^a-z]+/g, "")
     .substring(0, 6);
 
-  let mailTransporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.mailid,
-      pass: process.env.mailpass,
-    },
-  });
-
-  let mailDetails = {
-    from: process.env.mailid,
-    to: email,
-    subject: "Password Reset",
-    text: "Your Code is " + resetcode,
-  };
-
-  mailTransporter.sendMail(mailDetails, function (err, data) {
-    if (err) {
-      console.log("Error Occurs");
-      response
-        .status(400)
-        .send({ message: "Error Occurs Please Try again later" });
+  const codesend = await sendMail(email, resetcode, request, response);
+  if (codesend == "success") {
+    const hashedpassword = await harshpassword(resetcode);
+    const update_code = await updateresetcode(hashedpassword, username);
+    if (update_code.acknowledged) {
+      response.status(200).send({ message: "success" });
       return;
-    } else {
-      console.log("Email sent successfully");
     }
-  });
-  const hashedpassword = await harshpassword(resetcode);
-  const update_code = await updateresetcode(hashedpassword, username);
-  if (update_code.acknowledged) {
-    response.status(200).send({ message: "success" });
-    return;
   }
-  response.status(400).send({ message: "Error Occurs Please Try again later" });
+  response.status(400).send({ message: "failure" });
 });
-
 // checkresetcode Route
 router.post("/checkresetcode", async (request, response) => {
   const { resetusername, resetcode } = request.body;
