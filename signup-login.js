@@ -94,7 +94,7 @@ async function sendMail(email, resetcode, response) {
     }
     return "success";
   });
-  return await check();
+  return check;
 }
 
 router.post("/forgetpass", async (request, response) => {
