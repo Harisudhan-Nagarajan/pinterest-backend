@@ -92,7 +92,6 @@ async function sendMail(email, resetcode, response) {
     if (err) {
       return "failure";
     }
-
     return "success";
   });
 }
@@ -113,7 +112,8 @@ router.post("/forgetpass", async (request, response) => {
     .substring(0, 6);
 
   const codesend = await sendMail(email, resetcode, request, response);
-  if (codesend == "success") {
+  console.log(codesend);
+  if (codesend === "success") {
     const hashedpassword = await harshpassword(resetcode);
     const update_code = await updateresetcode(hashedpassword, username);
     if (update_code.acknowledged) {
