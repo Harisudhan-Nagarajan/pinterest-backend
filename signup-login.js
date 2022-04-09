@@ -88,13 +88,12 @@ async function sendMail(email, resetcode, response) {
     text: `The verificaion code is ${resetcode}`,
   };
 
-  const check = mailTransporter.sendMail(mailDetails, async (err) => {
+  mailTransporter.sendMail(mailDetails, async (err) => {
     if (err) {
-      return "failure";
+      return response.status(200).send({ message: "success" });
     }
-    return "success";
+    return response.status(400).send({ message: "failure" });
   });
-  return check;
 }
 
 router.post("/forgetpass", async (request, response) => {
@@ -111,16 +110,11 @@ router.post("/forgetpass", async (request, response) => {
     .toString(36)
     .replace(/[^a-z]+/g, "")
     .substring(0, 6);
-
-  const codesend = await sendMail(email, resetcode, request, response);
-  console.log(codesend);
-  if (codesend === "success") {
-    const hashedpassword = await harshpassword(resetcode);
-    const update_code = await updateresetcode(hashedpassword, username);
-    if (update_code.acknowledged) {
-      response.status(200).send({ message: "success" });
-      return;
-    }
+  const hashedpassword = await harshpassword(resetcode);
+  const update_code = await updateresetcode(hashedpassword, username);
+  if (update_code.acknowledged) {
+    await sendMail(email, resetcode, request, response);
+    return;
   }
   response.status(400).send({ message: "failure" });
 });
