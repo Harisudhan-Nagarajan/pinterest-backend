@@ -88,12 +88,13 @@ async function sendMail(email, resetcode, response) {
     text: `The verificaion code is ${resetcode}`,
   };
 
-  mailTransporter.sendMail(mailDetails, async (err) => {
+  const check = mailTransporter.sendMail(mailDetails, async (err) => {
     if (err) {
       return "failure";
     }
     return "success";
   });
+  return check;
 }
 
 router.post("/forgetpass", async (request, response) => {
