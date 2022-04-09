@@ -143,7 +143,14 @@ export const searchpin = async (searchitem) => {
     .find({ category: searchitem })
     .toArray();
 };
-
+export const getfeed = async (feed) => {
+  console.log(feed);
+  return await client
+    .db("pinterest")
+    .collection("pins")
+    .find({ category: { $in: feed } })
+    .toArray();
+};
 export const userpins = async (name) => {
   return await client
     .db("pinterest")

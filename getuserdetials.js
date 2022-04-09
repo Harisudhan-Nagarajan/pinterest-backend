@@ -9,6 +9,7 @@ import {
   searchpin,
   searchprofile,
   userpins,
+  getfeed,
 } from "./helper.js";
 const router = express.Router();
 
@@ -22,6 +23,16 @@ router.get("/Home", async (request, response) => {
     return;
   }
   response.status(400).send({ message: "failure" });
+});
+
+router.post("/HomeFeed", async (request, response) => {
+  if (!request.header("username")) {
+    response.status(400).send({ message: "failure" });
+  }
+  const userdetials = await userdetial(request.header("username"));
+  
+  const feed = await getfeed(userdetials[0].feed);
+  response.status(200).send(feed);
 });
 
 router.post("/postfeed", async (request, response) => {
