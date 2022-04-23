@@ -135,7 +135,7 @@ router.post("/checkresetcode", async (request, response) => {
 
   const deleteresetcodef = await deleteresetcode(resetusername);
   if (deleteresetcodef.acknowledged) {
-    response.status(200).send({ message: "code is correct", token: token });
+    response.status(200).send({ message: "code i correct", token: token });
     return;
   }
   response.status(400).send({ message: "Error Occurs Please Try again later" });
